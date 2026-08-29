@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+
+# 真实凭据不入库，仓库只保留 .env.example
+.env
+.env.local
+
+# 运行期产生的 Trace，不入库
+docs/traces/*.jsonl
+
+*.log
+.DS_Store

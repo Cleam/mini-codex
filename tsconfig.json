@@ -1,1 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
 
+    // 项目是原生 ESM（package.json 里 "type": "module"）。
+    // NodeNext 让 TypeScript 使用与 Node.js 完全一致的模块解析规则，
+    // 代价是相对导入必须写扩展名：import { x } from './tools/read-file.js'
+    // 这里刻意不用 Bundler 解析，因为本项目的目的之一就是理解真实运行时行为。
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "verbatimModuleSyntax": true,
+
+    "types": ["node"],
+
+    "strict": true,
+    // LLM 返回的数组/对象访问结果可能为空，强制显式处理，避免隐藏的 undefined
+    "noUncheckedIndexedAccess": true,
+
+    // 跨平台约束：Windows 文件系统大小写不敏感，
+    // 这里强制大小写一致，避免在 macOS/Linux 上构建失败（见 AGENTS.md 4.5）
+    "forceConsistentCasingInFileNames": true,
+
+    // 当前阶段直接用 tsx 运行 TypeScript，不产出 dist
+    "noEmit": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src", "tests"]
+}
