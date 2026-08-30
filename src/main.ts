@@ -169,7 +169,12 @@ function finish(
   // 这个数组是怎么一层层长出来的（user -> assistant(tool_calls) -> tool -> assistant）。
   tracer.log({ type: 'messages_dump', data: { messages } })
 
-  console.log(`\n=== Final Answer ===\n${answer ?? '(模型没有返回文本内容)'}`)
+  // 模型决定调用工具时 content 可能是 null，也可能是空字符串（DeepSeek 就是后者），
+  // 所以这里不能只用 ?? 兜底，否则单轮停止的场景会打印出一片空白
+  const hasText = answer !== null && answer.trim() !== ''
+  console.log(
+    `\n=== Final Answer ===\n${hasText ? answer : '(模型没有返回文本内容，通常是因为它还想继续调用工具)'}`,
+  )
   console.log(`\nTrace: ${tracer.traceFile}`)
 }
 
